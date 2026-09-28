@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#ff7a59">
+<title>搭子合拍 · 出行前先合拍</title>
+<style>
+  :root{
+    --bg:#fff7f2;
+    --card:#ffffff;
+    --ink:#2b2118;
+    --sub:#8a7b6e;
+    --line:#f0e4d8;
+    --brand:#ff7a59;
+    --brand-2:#ff9d7a;
+    --good:#38b07a;
+    --warn:#e8a13a;
+    --bad:#e4574d;
+    --shadow:0 8px 30px rgba(180,120,80,.12);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    background:
+      radial-gradient(1200px 400px at 50% -140px,#ffe3d5 0%,rgba(255,227,213,0) 60%),
+      var(--bg);
+    color:var(--ink);
+    line-height:1.55;
+    min-height:100vh;
+  }
+  .wrap{max-width:480px;margin:0 auto;padding:20px 18px 48px;min-height:100vh;display:flex;flex-direction:column}
+  .hide{display:none !important}
+
+  /* ---------- header ---------- */
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .logo{
+    width:38px;height:38px;border-radius:12px;flex:none;
+    background:linear-gradient(135deg,var(--brand),var(--brand-2));
+    display:grid;place-items:center;color:#fff;font-size:20px;box-shadow:var(--shadow)
+  }
+  .brand h1{font-size:19px;margin:0;letter-spacing:.5px}
+  .brand .tag{font-size:12px;color:var(--sub);margin-top:-2px}
+
+  /* ---------- hero ---------- */
+  .hero{text-align:center;padding:26px 6px 8px}
+  .hero .big{font-size:26px;font-weight:800;line-height:1.3;margin:0 0 10px}
+  .hero .big em{font-style:normal;color:var(--brand)}
+  .hero p{color:var(--sub);font-size:14px;margin:0 auto;max-width:340px}
+  .feats{display:flex;flex-direction:column;gap:10px;margin:24px 0 8px}
+  .feat{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px 15px;
+    display:flex;gap:12px;align-items:flex-start;box-shadow:var(--shadow)
+  }
+  .feat .ico{font-size:20px;flex:none;line-height:1.4}
+  .feat b{font-size:14px}
+  .feat span{display:block;font-size:12.5px;color:var(--sub)}
+
+  /* ---------- buttons ---------- */
+  .btn{
+    appearance:none;border:none;cursor:pointer;font-family:inherit;
+    width:100%;padding:15px;border-radius:16px;font-size:16px;font-weight:700;
+    background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;
+    box-shadow:0 10px 24px rgba(255,122,89,.32);transition:transform .12s,opacity .2s;
+    margin-top:14px
+  }
+  .btn:active{transform:scale(.985)}
+  .btn.ghost{background:#fff;color:var(--ink);border:1.5px solid var(--line);box-shadow:none}
+  .btn.sm{padding:11px;font-size:14px;border-radius:12px;width:auto}
+  .btn:disabled{opacity:.45;box-shadow:none}
+
+  /* ---------- progress ---------- */
+  .prog{display:flex;align-items:center;gap:10px;margin:4px 0 16px}
+  .bar{flex:1;height:7px;background:#f3e6da;border-radius:99px;overflow:hidden}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--brand-2));width:0;transition:width .3s ease}
+  .prog .txt{font-size:12px;color:var(--sub);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+  /* ---------- member setup ---------- */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow);margin-bottom:14px}
+  .card h2{font-size:15px;margin:0 0 4px}
+  .card .hint{font-size:12.5px;color:var(--sub);margin:0 0 12px}
+  .mlist{display:flex;flex-direction:column;gap:9px}
+  .mrow{display:flex;align-items:center;gap:9px}
+  .mrow .idx{
+    width:26px;height:26px;border-radius:9px;flex:none;background:#fff2ec;color:var(--brand);
+    font-size:12px;font-weight:700;display:grid;place-items:center
+  }
+  .mrow input{
+    flex:1;border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;font-size:15px;
+    font-family:inherit;color:var(--ink);background:#fffdfb;min-width:0
+  }
+  .mrow input:focus{outline:none;border-color:var(--brand-2);background:#fff}
+  .mrow .del{border:none;background:#fff2ec;color:var(--bad);width:38px;height:38px;border-radius:11px;font-size:17px;cursor:pointer;flex:none}
+  .addrow{margin-top:10px}
+
+  /* ---------- question ---------- */
+  .who{
+    display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#fff2ec,#ffe9e0);
+    border-radius:14px;padding:11px 14px;margin-bottom:14px
+  }
+  .who .av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px;flex:none}
+  .who b{font-size:15px}
+  .who span{font-size:12px;color:var(--sub);display:block}
+
+  .q{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:var(--shadow);margin-bottom:12px}
+  .q .qt{font-size:14.5px;font-weight:700;margin-bottom:3px}
+  .q .qs{font-size:12px;color:var(--sub);margin-bottom:10px}
+  .opts{display:flex;flex-direction:column;gap:8px}
+  .opts.row{flex-direction:row;flex-wrap:wrap}
+  .opt{
+    border:1.5px solid var(--line);background:#fffdfb;border-radius:12px;padding:11px 13px;font-size:14px;
+    cursor:pointer;display:flex;align-items:center;gap:10px;transition:.15s;color:var(--ink);font-family:inherit;text-align:left
+  }
+  .opt .k{width:20px;height:20px;border-radius:6px;border:1.5px solid #ddd0c4;flex:none;display:grid;place-items:center;font-size:12px;color:#fff;transition:.15s}
+  .opt small{color:var(--sub);font-size:11.5px;margin-left:auto}
+  .opt.sel{border-color:var(--brand);background:#fff3ee}
+  .opt.sel .k{background:var(--brand);border-color:var(--brand)}
+  .opt.chip{flex:0 0 auto}
+  .opts.row .opt{padding:9px 13px;font-size:13.5px}
+
+  /* ---------- result ---------- */
+  .score-card{
+    background:linear-gradient(150deg,#ff8a63,#ff6f4d);color:#fff;border-radius:22px;padding:22px 18px 20px;
+    text-align:center;box-shadow:0 14px 34px rgba(255,110,80,.35);margin-bottom:14px;position:relative;overflow:hidden
+  }
+  .score-card:before{content:"";position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.12);top:-70px;right:-50px}
+  .score-card .lv{font-size:13px;background:rgba(255,255,255,.22);display:inline-block;padding:4px 12px;border-radius:99px;margin-bottom:8px}
+  .score-card .num{font-size:56px;font-weight:800;line-height:1;letter-spacing:-1px;position:relative}
+  .score-card .num s{font-size:22px;font-weight:600;text-decoration:none;opacity:.85}
+  .score-card .say{font-size:14px;margin-top:8px;opacity:.95;position:relative}
+
+  .pairlist{display:flex;flex-direction:column;gap:10px}
+  .pair{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow)}
+  .pair .top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
+  .pair .nm{font-size:14px;font-weight:700}
+  .pill{font-size:11.5px;padding:3px 9px;border-radius:99px;font-weight:700;white-space:nowrap}
+  .pill.g{background:#e6f7ef;color:#1f8a5c}
+  .pill.w{background:#fdf1dd;color:#b5791c}
+  .pill.b{background:#fde9e7;color:#c33b31}
+  .pair .bar2{height:6px;background:#f3e6da;border-radius:99px;overflow:hidden;margin:6px 0 4px}
+  .pair .bar2 i{display:block;height:100%;border-radius:99px}
+  .pair .cf{font-size:12.5px;color:var(--sub)}
+  .pair .cf b{color:var(--bad)}
+
+  /* ---------- 公约 ---------- */
+  .pact{
+    background:linear-gradient(160deg,#fffdf9,#fff4ec);border:1.5px dashed #f0c9b4;border-radius:22px;
+    padding:20px 18px;margin-bottom:14px
+  }
+  .pact .ph{text-align:center;padding-bottom:12px;border-bottom:1px dashed #eccdb9;margin-bottom:14px}
+  .pact .ph .t{font-size:19px;font-weight:800;letter-spacing:2px}
+  .pact .ph .s{font-size:12px;color:var(--sub);margin-top:4px}
+  .pact .names{font-size:12.5px;color:var(--sub);text-align:center;margin-top:8px}
+  .pact ol{margin:0;padding-left:0;list-style:none;counter-reset:p}
+  .pact li{
+    position:relative;padding:11px 0 11px 34px;border-bottom:1px dashed #f2ddce;font-size:14px;counter-increment:p
+  }
+  .pact li:last-child{border-bottom:none}
+  .pact li:before{
+    content:counter(p);position:absolute;left:0;top:11px;width:22px;height:22px;border-radius:7px;
+    background:var(--brand);color:#fff;font-size:12px;font-weight:700;display:grid;place-items:center
+  }
+  .pact li b{color:var(--brand)}
+  .pact .sign{margin-top:14px;padding-top:12px;border-top:1px dashed #eccdb9;font-size:12px;color:var(--sub);text-align:center;line-height:1.9}
+  .toast{
+    position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(20px);opacity:0;
+    background:#2b2118;color:#fff;font-size:13px;padding:10px 18px;border-radius:99px;transition:.25s;z-index:99;pointer-events:none;max-width:88%;text-align:center
+  }
+  .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+  .foot{text-align:center;font-size:11.5px;color:#b9a99b;margin-top:auto;padding-top:26px}
+  .rowbtns{display:flex;gap:10px}
+  .rowbtns .btn{margin-top:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ 首页 ============ -->
+  <section id="v-home">
+    <div class="brand">
+      <div class="logo">🤝</div>
+      <div>
+        <h1>搭子合拍</h1>
+        <div class="tag">出行前先合拍 · 把丑话说前头</div>
+      </div>
+    </div>
+
+    <div class="hero">
+      <p class="big">旅行没散伙，<br>全靠<em>出发前那 30 秒</em>。</p>
+      <p>78% 的年轻人找过旅游搭子，其中 <b>41% 第一天就想散伙</b>——多数不是因为目的地，而是节奏、预算、作息对不上。</p>
+    </div>
+
+    <div class="feats">
+      <div class="feat"><div class="ico">🧭</div><div><b>测合拍度</b><span>每人几道题，算出你们俩/你们全队的旅行默契分</span></div></div>
+      <div class="feat"><div class="ico">⚡</div><div><b>标冲突点</b><span>一眼看清哪几个地方最容易吵起来</span></div></div>
+      <div class="feat"><div class="ico">📜</div><div><b>生成旅行公约</b><span>一键出条款，截图发群里，谁也别赖账</span></div></div>
+    </div>
+
+    <button class="btn" onclick="startSetup()">开始测合拍 →</button>
+    <div class="foot">数据只存本机浏览器 · 不上传服务器</div>
+  </section>
+
+  <!-- ============ 添加搭子 ============ -->
+  <section id="v-setup" class="hide">
+    <div class="brand">
+      <div class="logo">🤝</div>
+      <div><h1>搭子合拍</h1><div class="tag">第 1 步 / 共 3 步</div></div>
+    </div>
+    <div class="card">
+      <h2>都有谁一起去？</h2>
+      <p class="hint">填 2–6 个人。写下名字或昵称，一会儿轮流答题。</p>
+      <div class="mlist" id="mlist"></div>
+      <div class="addrow"><button class="btn ghost sm" id="addBtn" onclick="addMember()">＋ 添加一位搭子</button></div>
+    </div>
+    <button class="btn" id="toAnswer" onclick="beginAnswer()">下一步：轮流答题 →</button>
+  </section>
+
+  <!-- ============ 答题 ============ -->
+  <section id="v-answer" class="hide">
+    <div class="prog">
+      <div class="bar"><i id="pbar"></i></div>
+      <div class="txt" id="ptxt">1 / 2</div>
+    </div>
+    <div class="who">
+      <div class="av" id="avTap">?</div>
+      <div><b id="whoName">搭子</b><span id="whoHint">请如实作答，别替别人选 🙂</span></div>
+    </div>
+    <div id="qbox"></div>
+    <div class="rowbtns">
+      <button class="btn ghost" id="prevBtn" onclick="prevMember()">← 上一位</button>
+      <button class="btn" id="nextBtn" onclick="nextMember()">下一位 →</button>
+    </div>
+  </section>
+
+  <!-- ============ 结果 ============ -->
+  <section id="v-result" class="hide">
+    <div class="brand">
+      <div class="logo">🤝</div>
+      <div><h1>搭子合拍</h1><div class="tag" id="resTag">合拍报告 · 旅行公约</div></div>
+    </div>
+    <div id="resScore"></div>
+
+    <div class="card">
+      <h2>两两合拍度</h2>
+      <p class="hint">谁和谁最容易闹别扭，一目了然。</p>
+      <div class="pairlist" id="pairList"></div>
+    </div>
+
+    <div class="pact" id="pact"></div>
+
+    <div class="rowbtns">
+      <button class="btn ghost" onclick="copyPact()">📋 复制公约</button>
+      <button class="btn" onclick="location.reload()">🔄 重新测</button>
+    </div>
+    <div class="foot">合拍度 = 8 个维度匹配分加权 · 仅供娱乐参考<br>真正的默契，靠沟通 ✌️</div>
+  </section>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= 数据定义 ================= */
+var DIMS = [
+  {key:'wake',  w:1.3, q:'你的作息更像？',      s:'决定每天几点出发', opts:[
+     {v:'早',d:'早起鸟·7点前'},{v:'中',d:'正常·8–9点'},{v:'晚',d:'夜猫子·不到中午不起'}]},
+  {key:'pace',  w:1.4, q:'你想的玩法和节奏是？', s:'暴走还是躺平', opts:[
+     {v:'暴走',d:'一天打卡5个点'},{v:'适中',d:'张弛有度'},{v:'躺平',d:'睡到自然醒慢慢逛'}]},
+  {key:'budget',w:1.3, q:'这次预算档位？',      s:'住宿餐饮的整体档', opts:[
+     {v:'经济',d:'能省则省·青旅/民宿'},{v:'标准',d:'舒适为主·连锁酒店'},{v:'品质',d:'吃住都要好'}]},
+  {key:'food',  w:1,   q:'口味偏好？',          s:'点菜别点崩', opts:[
+     {v:'清淡',d:'不辣/养生'},{v:'无辣不欢',d:'重口够味'},{v:'都行',d:'不挑食'}]},
+  {key:'photo', w:1,   q:'拍照习惯？',          s:'一个点待多久', opts:[
+     {v:'狂拍',d:'每个点拍半小时'},{v:'随手',d:'拍几张就走'},{v:'不拍',d:'眼睛看就行'}]},
+  {key:'plan',  w:1.2, q:'行程规划倾向？',      s:'排满还是随性', opts:[
+     {v:'排满',d:'精确到小时'},{v:'大致',d:'列几个必去'},{v:'随性',d:'到了再说'}]},
+  {key:'shop',  w:1,   q:'逛街购物？',          s:'别在店里等半天', opts:[
+     {v:'必逛',d:'逛街是重头戏'},{v:'随缘',d:'路过看看'},{v:'不逛',d:'纯玩不购物'}]},
+  {key:'spot',  w:1.1, q:'景点偏好？',          s:'玩什么类型', opts:[
+     {v:'网红',d:'打卡出片地'},{v:'经典',d:'地标名胜'},{v:'小众',d:'人少的秘境'}]}
+];
+
+var MINES = [
+  {v:'爬山',   c:'全队约定：本次行程不含「爬山」，想爬的自己加练'},
+  {v:'排队',   c:'热门店提前线上取号；任一点排队超 30 分钟，立即换下一家'},
+  {v:'暴走',   c:'单日步行设上限，累了随时打车，不硬撑'},
+  {v:'人多',   c:'热门景点错峰去（开门即到或闭园前），避开正午人流'},
+  {v:'夜生活', c:'夜生活自由活动，不作集体硬性安排'},
+  {v:'博物馆', c:'博物馆/艺术馆类行程不强制，可分队，到点汇合'}
+];
+
+/* 各维度冲突 → 公约条款 */
+var CLAUSE = {
+  wake:  '起床时间差异大：各自睡到满意，<b>约定每天 11:00 酒店大堂集合</b>再出发',
+  pace:  '节奏快慢不一：白天分头行动，<b>核心景点集体行动 + 晚饭必合体</b>',
+  budget:'预算档不同：<b>住宿/交通按最低档共识定</b>，个人消费各自 AA，不相互绑架',
+  food:  '口味不同：<b>一人主导一顿</b>，每餐兼顾辣与不辣，各点一个心头好',
+  photo: '拍照习惯不同：每个点设 <b>15 分钟拍照档</b>，拍完就撤，不催也不等太久',
+  plan:  '计划性不同：出发前只锁 <b>3 个「必去锚点」</b>，其余时间随机填空',
+  shop:  '购物意愿不同：每天设 <b>1 段「购物时间窗」</b>，不想逛的去咖啡店等，不强求',
+  spot:  '景点偏好不同：<b>每天 1 个经典 + 1 个小众</b>，各让一步，谁也不憋屈'
+};
+
+/* ================= 状态 ================= */
+var state = { members:[], midx:0 };
+
+/* ================= 工具 ================= */
+function $(id){ return document.getElementById(id); }
+function show(id){
+  ['v-home','v-setup','v-answer','v-result'].forEach(function(v){ $(v).classList.add('hide'); });
+  $(id).classList.remove('hide');
+  window.scrollTo(0,0);
+}
+function toast(msg){
+  var t = $('toast'); t.textContent = msg; t.classList.add('on');
+  clearTimeout(t._tm); t._tm = setTimeout(function(){ t.classList.remove('on'); }, 1900);
+}
+function saveTry(){
+  try{ localStorage.setItem('dazi_draft', JSON.stringify(state.members)); }catch(e){}
+}
+function loadTry(){
+  try{
+    var raw = localStorage.getItem('dazi_draft');
+    if(raw){ var d = JSON.parse(raw); if(Array.isArray(d) && d.length){ return d; } }
+  }catch(e){}
+  return null;
+}
+
+/* ================= 添加搭子 ================= */
+function startSetup(){
+  var draft = loadTry();
+  state.members = (draft && draft.length >= 2) ? draft.map(function(m){
+    return { name:m.name || '', answers: m.answers || {} };
+  }) : [{name:'',answers:{}},{name:'',answers:{}}];
+  state.midx = 0;
+  renderMembers();
+  show('v-setup');
+}
+function addMember(){
+  if(state.members.length >= 6){ toast('最多 6 位搭子哦'); return; }
+  state.members.push({ name:'', answers:{} });
+  renderMembers();
+  saveTry();
+  var inputs = $('mlist').querySelectorAll('input');
+  if(inputs.length) inputs[inputs.length-1].focus();
+}
+function renderMembers(){
+  var box = $('mlist'); box.innerHTML = '';
+  state.members.forEach(function(m, i){
+    var row = document.createElement('div'); row.className = 'mrow';
+    var idx = document.createElement('div'); idx.className='idx'; idx.textContent = i+1;
+    var inp = document.createElement('input');
+    inp.type='text'; inp.maxLength = 8; inp.placeholder = '搭子 ' + (i+1) + ' 的名字';
+    inp.value = m.name || '';
+    inp.oninput = function(){ state.members[i].name = this.value.trim(); };
+    var del = document.createElement('button'); del.className='del'; del.textContent='×';
+    del.title = '删除';
+    del.onclick = function(){
+      if(state.members.length <= 2){ toast('至少保留 2 位搭子'); return; }
+      state.members.splice(i,1); renderMembers();
+    };
+    row.appendChild(idx); row.appendChild(inp); row.appendChild(del);
+    box.appendChild(row);
+  });
+  $('addBtn').classList.toggle('hide', state.members.length >= 6);
+}
+
+/* ================= 答题 ================= */
+function beginAnswer(){
+  // 补默认名
+  state.members.forEach(function(m,i){ if(!m.name) m.name = '搭子'+(i+1); });
+  state.midx = 0;
+  renderQuestions();
+  show('v-answer');
+}
+function renderQuestions(){
+  var m = state.members[state.midx];
+  $('pbar').style.width = ((state.midx)/state.members.length*100) + '%';
+  $('ptxt').textContent = (state.midx+1) + ' / ' + state.members.length;
+  $('whoName').textContent = m.name;
+  $('avTap').textContent = m.name.slice(0,1);
+
+  var box = $('qbox'); box.innerHTML = '';
+  DIMS.forEach(function(dim){
+    var q = document.createElement('div'); q.className='q';
+    var t = document.createElement('div'); t.className='qt'; t.textContent = dim.q;
+    var s = document.createElement('div'); s.className='qs'; s.textContent = dim.s;
+    q.appendChild(t); q.appendChild(s);
+    var opts = document.createElement('div'); opts.className='opts';
+    dim.opts.forEach(function(o){
+      var b = document.createElement('button'); b.className='opt';
+      var k = document.createElement('div'); k.className='k'; k.textContent='✓';
+      var lab = document.createElement('span'); lab.textContent = o.v;
+      var sm = document.createElement('small'); sm.textContent = o.d;
+      b.appendChild(k); b.appendChild(lab); b.appendChild(sm);
+      if(m.answers[dim.key] === o.v) b.classList.add('sel');
+      b.onclick = function(){
+        m.answers[dim.key] = o.v;
+        var sib = opts.querySelectorAll('.opt');
+        for(var i=0;i<sib.length;i++) sib[i].classList.remove('sel');
+        b.classList.add('sel');
+        saveTry(); updNext();
+      };
+      opts.appendChild(b);
+    });
+    q.appendChild(opts);
+    box.appendChild(q);
+  });
+
+  // 雷点（多选）
+  var mq = document.createElement('div'); mq.className='q';
+  var mt = document.createElement('div'); mt.className='qt'; mt.textContent = '有什么「雷点」？（可多选）';
+  var ms = document.createElement('div'); ms.className='qs'; ms.textContent = '勾上就等于写进公约，避免行程踩雷';
+  mq.appendChild(mt); mq.appendChild(ms);
+  var mopts = document.createElement('div'); mopts.className='opts row';
+  if(!m.answers.mines) m.answers.mines = [];
+  MINES.forEach(function(o){
+    var b = document.createElement('button'); b.className='opt chip';
+    var k = document.createElement('div'); k.className='k'; k.textContent='✓';
+    var lab = document.createElement('span'); lab.textContent = o.v;
+    b.appendChild(k); b.appendChild(lab);
+    if(m.answers.mines.indexOf(o.v) >= 0) b.classList.add('sel');
+    b.onclick = function(){
+      var arr = m.answers.mines, i = arr.indexOf(o.v);
+      if(i>=0){ arr.splice(i,1); b.classList.remove('sel'); }
+      else{ arr.push(o.v); b.classList.add('sel'); }
+      saveTry();
+    };
+    mopts.appendChild(b);
+  });
+  mq.appendChild(mopts);
+  box.appendChild(mq);
+
+  $('prevBtn').style.visibility = state.midx === 0 ? 'hidden' : 'visible';
+  $('nextBtn').textContent = (state.midx === state.members.length-1) ? '生成报告 →' : '下一位 →';
+  updNext();
+}
+function allAnswered(m){ return DIMS.every(function(d){ return !!m.answers[d.key]; }); }
+function updNext(){
+  var m = state.members[state.midx];
+  $('nextBtn').disabled = !allAnswered(m);
+}
+function prevMember(){
+  if(state.midx > 0){ state.midx--; renderQuestions(); }
+}
+function nextMember(){
+  var m = state.members[state.midx];
+  if(!allAnswered(m)){ toast('还有题没选哦～'); return; }
+  if(state.midx < state.members.length-1){ state.midx++; renderQuestions(); }
+  else{ showResult(); }
+}
+
+/* ================= 计算 ================= */
+// 维度内两两距离：0同 → 100；相邻 → 62；两端 → 16
+function dimScore(a, b){
+  var p = DIMS.map(function(d){ return d.opts.map(function(o){ return o.v; }).indexOf(a[d.key]); });
+  var q = DIMS.map(function(d){ return d.opts.map(function(o){ return o.v; }).indexOf(b[d.key]); });
+  var num = 0, den = 0;
+  DIMS.forEach(function(d, i){
+    var dist = Math.abs(p[i]-q[i]);
+    var sc = dist===0 ? 100 : (dist===1 ? 62 : 16);
+    num += sc * d.w; den += d.w;
+  });
+  return Math.round(num/den);
+}
+function pairConflicts(a, b){
+  var out = [];
+  DIMS.forEach(function(d){
+    var ia = d.opts.map(function(o){ return o.v; }).indexOf(a[d.key]);
+    var ib = d.opts.map(function(o){ return o.v; }).indexOf(b[d.key]);
+    if(Math.abs(ia-ib) === 2) out.push(dimLabel(d.key));
+  });
+  return out;
+}
+function dimLabel(k){
+  var map = {wake:'作息',pace:'节奏',budget:'预算档',food:'口味',photo:'拍照',plan:'计划性',shop:'购物',spot:'景点偏好'};
+  return map[k] || k;
+}
+function levelOf(score){
+  if(score >= 85) return {lv:'灵魂搭子',say:'天作之合，闭眼出发',cls:'g'};
+  if(score >= 70) return {lv:'合拍搭子',say:'默契在线，放心同行',cls:'g'};
+  if(score >= 55) return {lv:'磨合搭子',say:'差异不少，签了公约再走',cls:'w'};
+  return {lv:'冰火搭子',say:'分歧很大，出发前必须聊一次',cls:'b'};
+}
+function totalScore(){
+  var ms = state.members, sum = 0, cnt = 0;
+  for(var i=0;i<ms.length;i++) for(var j=i+1;j<ms.length;j++){
+    sum += dimScore(ms[i].answers, ms[j].answers); cnt++;
+  }
+  return cnt ? Math.round(sum/cnt) : 0;
+}
+function scoreColor(s){
+  if(s >= 70) return '#38b07a'; if(s >= 55) return '#e8a13a'; return '#e4574d';
+}
+
+/* ================= 结果渲染 ================= */
+var lastPactText = '';
+
+function showResult(){
+  // 总分
+  var total = totalScore(), lv = levelOf(total);
+  var sc = $('resScore');
+  sc.innerHTML =
+    '<div class="score-card">'+
+      '<div class="lv">'+ lv.lv +'</div>'+
+      '<div class="num">'+ total +'<s> 分</s></div>'+
+      '<div class="say">'+ lv.say +'</div>'+
+    '</div>';
+
+  // 两两
+  var ms = state.members, pl = $('pairList'); pl.innerHTML = '';
+  var allConflictLabels = {};
+  for(var i=0;i<ms.length;i++) for(var j=i+1;j<ms.length;j++){
+    var a = ms[i], b = ms[j];
+    var s = dimScore(a.answers, b.answers);
+    var cf = pairConflicts(a.answers, b.answers);
+    cf.forEach(function(x){ allConflictLabels[x] = true; });
+    var p = document.createElement('div'); p.className='pair';
+    var pillCls = s>=70?'g':(s>=55?'w':'b');
+    var col = scoreColor(s);
+    p.innerHTML =
+      '<div class="top"><div class="nm">'+ esc(a.name) +' × '+ esc(b.name) +'</div>'+
+        '<div class="pill '+pillCls+'">'+ s +' 分</div></div>'+
+      '<div class="bar2"><i style="width:'+ s +'%;background:'+ col +'"></i></div>'+
+      '<div class="cf">'+ (cf.length ? '容易卡在：<b>'+ cf.join(' / ') +'</b>' : '基本没冲突，放心组队 👍') +'</div>';
+    pl.appendChild(p);
+  }
+
+  // 公约
+  var items = [];
+  DIMS.forEach(function(d){
+    var vals = ms.map(function(m){ return m.answers[d.key]; });
+    var idxs = ms.map(function(m){ return d.opts.map(function(o){ return o.v; }).indexOf(m.answers[d.key]); });
+    if(Math.max.apply(null, idxs) - Math.min.apply(null, idxs) === 2){ items.push(CLAUSE[d.key]); }
+  });
+  // 雷点并集
+  var mineSet = {};
+  ms.forEach(function(m){ (m.answers.mines||[]).forEach(function(x){ mineSet[x]=true; }); });
+  MINES.forEach(function(o){ if(mineSet[o.v]) items.push(o.c); });
+  if(items.length === 0) items.push('全队高度合拍，<b>保持沟通、随时说真话</b>，就是最好的公约');
+
+  var names = ms.map(function(m){ return esc(m.name); }).join('、');
+  var html =
+    '<div class="ph"><div class="t">旅行公约</div>'+
+      '<div class="s">'+ lv.lv +' · 合拍度 '+ total +' 分 · 出行前先合拍</div>'+
+      '<div class="names">立约人：'+ names +'</div></div>'+
+    '<ol>';
+  items.forEach(function(t){ html += '<li>'+ t +'</li>'; });
+  html += '</ol>'+
+    '<div class="sign">签字即生效，谁先违反谁请奶茶 🧋<br>'+ fmtDate() +' 立 · 搭子合拍</div>';
+  $('pact').innerHTML = html;
+
+  lastPactText = '【旅行公约】合拍度 ' + total + ' 分（' + lv.lv + '）\n立约人：' + ms.map(function(m){return m.name;}).join('、') + '\n\n'
+    + items.map(function(t,i){ return (i+1)+'. '+ t.replace(/<[^>]+>/g,''); }).join('\n')
+    + '\n\n—— 搭子合拍 · 出行前先合拍';
+
+  show('v-result');
+  if(!window.__DEMO) toast('报告已生成 🎉');
+}
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function fmtDate(){
+  var d = new Date();
+  return d.getFullYear() + '.' + (d.getMonth()+1) + '.' + d.getDate();
+}
+function copyPact(){
+  var txt = lastPactText;
+  function done(){ toast('已复制，去粘贴到群里吧'); }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(done, function(){ fallbackCopy(txt, done); });
+  } else { fallbackCopy(txt, done); }
+}
+function fallbackCopy(txt, cb){
+  try{
+    var ta = document.createElement('textarea'); ta.value = txt;
+    ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta); cb();
+  }catch(e){ toast('复制失败，请长按手动选择'); }
+}
+
+/* ================= 演示模式：#demo 自动生成样例报告 ================= */
+(function demoBoot(){
+  if(location.hash.indexOf('demo') < 0) return;
+  window.__DEMO = true;
+  state.members = [
+    {name:'小美', answers:{wake:'早',pace:'暴走',budget:'标准',food:'都行',photo:'狂拍',plan:'排满',shop:'必逛',spot:'网红',mines:['暴走','人多']}},
+    {name:'阿泽', answers:{wake:'中',pace:'适中',budget:'经济',food:'无辣不欢',photo:'随手',plan:'大致',shop:'随缘',spot:'经典',mines:['爬山','排队']}},
+    {name:'彤彤', answers:{wake:'晚',pace:'适中',budget:'经济',food:'清淡',photo:'随手',plan:'随性',shop:'必逛',spot:'经典',mines:['夜生活']}}
+  ];
+  document.addEventListener('DOMContentLoaded', function(){
+    if(location.hash.indexOf('demoq') >= 0){
+      // 答题页演示：第一位搭子，已勾选部分选项
+      state.midx = 0;
+      state.members[0].answers = {wake:'早',pace:'暴走',budget:'标准',food:'都行',photo:'狂拍',plan:'排满',mines:['暴走']};
+      renderQuestions(); show('v-answer');
+    } else {
+      showResult();
+    }
+  });
+})();
+</script>
+</body>
+</html>
